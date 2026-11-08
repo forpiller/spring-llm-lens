@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>LLM Lens Showcase</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+    <link rel="stylesheet" th:href="@{/css/showcase.css(v=3)}"/>
+</head>
+<body>
+<header>
+    <i class="fas fa-binoculars"></i>
+    <h1>LLM Lens Showcase</h1>
+    <a href="http://localhost:3000" target="_blank">Open Grafana Dashboard &#x2197;</a>
+</header>
+
+<div class="container">
+
+    <!-- Chatbot -->
+    <div class="card">
+        <h2><i class="fas fa-terminal"></i> Chatbot <span class="badge">feature: chatbot</span></h2>
+
+        <div class="chat-history">
+            <div th:if="${chatMessage}" class="bubble user">
+                <div class="label">You</div>
+                <span th:text="${chatMessage}"></span>
+            </div>
+            <div th:if="${chatResult}" class="bubble ai">
+                <div class="label">AI</div>
+                <span class="bubble-text" th:text="${chatResult}"></span>
+            </div>
+        </div>
+
+        <form class="input-area" method="post" action="/chat">
+            <textarea name="message" placeholder="Ask something..."></textarea>
+            <button type="submit">
+                <i class="fas fa-paper-plane"></i> Send
+            </button>
+        </form>
+    </div>
+
+    <!-- Summarizer -->
+    <div class="card">
+        <h2><i class="fas fa-scissors"></i> Summarizer <span class="badge">feature: summarizer</span></h2>
+
+        <div class="chat-history">
+            <div th:if="${summarizeText}" class="bubble user">
+                <div class="label">You</div>
+                <div class="text-preview" th:text="${summarizeText}"></div>
+                <button class="toggle-btn" type="button" onclick="toggleText(this)">Show more &#x25BC;</button>
+            </div>
+            <div th:if="${summarizeResult}" class="bubble ai">
+                <div class="label">Summary</div>
+                <span class="bubble-text" th:text="${summarizeResult}"></span>
+            </div>
+        </div>
+
+        <form class="input-area" method="post" action="/summarize">
+            <textarea name="text" placeholder="Paste a long text to summarize..."></textarea>
+            <button type="submit">
+                <i class="fas fa-compress"></i> Summarize
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<p class="footer">
+    Each request is tracked by spring-llm-lens — tokens, cost and latency appear in Grafana.
+</p>
+
+<script th:src="@{/js/showcase.js}"></script>
+</body>
+</html>
